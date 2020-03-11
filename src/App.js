@@ -1,13 +1,15 @@
 import React from 'react';
+
 import './App.css';
 
 function App() {
+  
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          <h1>Find a Lens</h1>
+          <h3>Search for Photographers in Your Area</h3>
         </p>
         <a
           className="App-link"
@@ -19,7 +21,7 @@ function App() {
         </a>
       </header>
     </div>
-  );
-}
+    );
+  }
 
 export default App;
