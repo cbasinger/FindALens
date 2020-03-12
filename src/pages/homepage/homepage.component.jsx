@@ -8,8 +8,11 @@ function handleClick(e) {
     e.preventDefault();
     firebase.db.collection("users").get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-            console.log(`${doc.id} => ${doc.data().f_name}, ${doc.data().l_name}`);
+            console.log(`${doc.id} => ${doc.data()}`);
         });
+    })
+    .catch((error) => {
+        console.log("Error getting document:", error);
     });
 }
 
