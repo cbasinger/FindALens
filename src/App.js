@@ -1,24 +1,16 @@
 import React from 'react';
 
 import './App.css';
+import HomePage from './pages/homepage/homepage.component';
 
 function App() {
   
   return (
     <div className="App">
       <header className="App-header">
-        <p>
           <h1>Find a Lens</h1>
           <h3>Search for Photographers in Your Area</h3>
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+          <HomePage />
       </header>
     </div>
     );
