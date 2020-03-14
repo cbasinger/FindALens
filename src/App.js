@@ -1,25 +1,55 @@
 import React from 'react';
+
+
+
+import { Switch, Route } from 'react-router-dom';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import Header from './components/header/header.component';
+import SignInandSignUpPage from './pages/sign-in-sign-up/sign-in-sign-up.component';
+import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+
+
+class App extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      currentUser: null
+    };
+  }
+unsubscribeFromAuth = null
+
+  componentDidMount(){
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+      
+        userRef.onSnapshot(snapShot => {
+          console.log(snapShot.data());
+        })
+      }
+
+      
+    });
+  }
+  componentWillUnmount() {
+    this.unsubscribeFromAuth();
+  }
+
+
+  render() {
+    return (
+      <div>
+        <Header currentUser={this.state.currentUser} />
+        <Switch>
+          <Route path='/signin' component={SignInandSignUpPage} />
+        </Switch>
+      </div>
+      );
+    }
+  }
+  
+
 
 export default App;
