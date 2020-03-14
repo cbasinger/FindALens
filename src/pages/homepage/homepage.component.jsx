@@ -1,5 +1,6 @@
 import Firebase from '../../firebase/firebase.utils';
 import React from 'react';
+import Map from '../../components/map.component';
 
 const firebase = new Firebase();
 
@@ -7,7 +8,7 @@ function handleClick(e) {
     e.preventDefault();
     firebase.db.collection("users").get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-            console.log(`${doc.id} => ${doc.data().f_name}, ${doc.data().l_name}`);
+            console.log(doc.id, " => ", doc.data());
         });
     })
     .catch((error) => {
@@ -16,14 +17,14 @@ function handleClick(e) {
 }
 
 
-const HomePage = () => (
+export default class HomePage extends React.Component {
 
-    <div>
+    render() {
 
-        <button onClick={handleClick}>Click me</button>
+        return <div>
+                    <button onClick={handleClick}>Click me</button>
+                    <Map />
+               </div>
 
-    </div>
-
-);
-
-export default HomePage;
+    }
+}
