@@ -1,12 +1,10 @@
-import Firebase from '../../firebase/firebase.utils';
+import { firestore } from '../../firebase/firebase.utils';
 import React from 'react';
-import Map from '../../components/map.component';
-
-const firebase = new Firebase();
+import Map from '../../components/map/map.component';
 
 function handleClick(e) {
     e.preventDefault();
-    firebase.db.collection("users").get().then((querySnapshot) => {
+    firestore.collection("users").get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             console.log(doc.id, " => ", doc.data());
         });

@@ -1,7 +1,6 @@
-//require('dotenv').config();
-const firebase = require("firebase");
-require("firebase/firestore");
-
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
 
 const config =
 {
@@ -15,15 +14,40 @@ const config =
     measurementId: "G-1ZMZCN2DT2"
 };
 
-class Firebase {
+export const createUserProfileDocument = async (userAuth, additionalData) => {
+    if (!userAuth) return;
 
-    constructor() {
+    const userRef = firestore.doc(`users/${userAuth.uid}`);
 
-        firebase.initializeApp(config);
-        this.db = firebase.firestore();
+    const snapShot = await userRef.get();
+
+    if (!snapShot.exists) {
+        const { displayName, email } = userAuth;
+        const createdAt = new Date();
+
+        try {
+            await userRef.set({
+                displayName,
+                email,
+                createdAt,
+                ...additionalData
+            })
+        } catch (error) {
+            console.log('error creating user', error.message);
+        }
 
     }
+    return userRef;
 
 }
 
-export default Firebase;
+firebase.initializeApp(config);
+
+export const auth = firebase.auth();
+export const firestore = firebase.firestore();
+
+const provider = new firebase.auth.GoogleAuthProvider();
+provider.setCustomParameters({ prompt: 'select_account' });
+export const signInWithGoogle = () => auth.signInWithPopup(provider);
+
+export default firebase;

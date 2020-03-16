@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
-import { GoogleMap, LoadScript, Circle, StandaloneSearchBox } from '@react-google-maps/api'
-require('dotenv').config();
+import  firebase, { firestore } from '../../firebase/firebase.utils';
+import { GoogleMap, LoadScript, Circle, StandaloneSearchBox } from '@react-google-maps/api';
+import * as geofirex from 'geofirex';
+
+const geo = geofirex.init(firebase);
+const position = geo.point(-84.37, 33.84);
+firestore.collection('users').add({ displayName: 'Jorge', position });
 
 const mapsApiKey = process.env.REACT_APP_MAPS_API_KEY;
 
@@ -27,8 +32,6 @@ const options = {
     radius: 30000,
     zIndex: 1
 }
-
-
 
 export default class Map extends Component {
     render() {
