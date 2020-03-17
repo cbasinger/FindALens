@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import  firebase, { firestore } from '../../firebase/firebase.utils';
-import { GoogleMap, LoadScript, Circle, StandaloneSearchBox } from '@react-google-maps/api';
+import firebase, { firestore } from '../../firebase/firebase.utils';
+import { GoogleMap, LoadScript, Marker, Circle, StandaloneSearchBox } from '@react-google-maps/api';
 import * as geofirex from 'geofirex';
 
+/*
 const geo = geofirex.init(firebase);
 const position = geo.point(-84.37, 33.84);
 firestore.collection('users').add({ displayName: 'Jorge', position });
+*/
 
 const mapsApiKey = process.env.REACT_APP_MAPS_API_KEY;
 
@@ -14,17 +16,17 @@ const mapContainerStyle = {
     width: "800px"
 }
 
-const center = {
-    lat: 33.7489,
-    lng: -84.3879
+const mapCenter = {
+    lat: 37.09024,
+    lng: -95.712891
 }
 
 const options = {
     strokeColor: '#FF0000',
     strokeOpacity: 0.8,
-    strokeWeight: 2,
-    fillColor: '#FF0000',
-    fillOpacity: 0.35,
+    strokeWeight: 1,
+    fillColor: '#00FFFF',
+    fillOpacity: 0.2,
     clickable: false,
     draggable: false,
     editable: false,
@@ -33,27 +35,61 @@ const options = {
     zIndex: 1
 }
 
+const placesLib = ["places"]
+
 export default class Map extends Component {
+
+    constructor() {
+
+        super();
+
+        this.state = {
+            
+            mapCenter: mapCenter,
+            shootPosition: null,
+            circleCenter: null
+
+        }
+
+    }
+    
     render() {
 
-        const onLoad = ref => this.searchBox = ref;
+        let { mapCenter, shootPosition, circleCenter } = this.state;
 
-        const onPlacesChanged = () => console.log(this.searchBox.getPlaces());
-        
+        const onLoadSearchBox = ref => this.searchBox = ref;
+
+        const onLoadMarker = marker => {
+            console.log('marker: ', marker.position)
+        }
+
+        const onPlacesChanged = () => {
+            //console.log(this.searchBox.getPlaces()[0].geometry.location.lat(), this.searchBox.getPlaces()[0].geometry.location.lng());
+            const targetLat = this.searchBox.getPlaces()[0].geometry.location.lat();
+            const targetLng = this.searchBox.getPlaces()[0].geometry.location.lng();
+            this.setState({
+
+                shootPosition: { lat: targetLat, lng: targetLng },
+                mapCenter: { lat: targetLat, lng: targetLng }
+
+            });
+            
+        }
+
         return (
             <LoadScript
                 id="script-loader"
                 googleMapsApiKey={mapsApiKey}
-                libraries={["places"]}
+                libraries={placesLib}
             >
                 <GoogleMap
                     id="map"
                     mapContainerStyle={mapContainerStyle}
-                    zoom={9}
-                    center={center}
+                    zoom={4}
+                    center={mapCenter}
                 >
                     <StandaloneSearchBox
-                        onLoad={onLoad}
+                        onLoad={onLoadSearchBox}
                         onPlacesChanged={onPlacesChanged}
                     >
                         <input
@@ -76,13 +112,17 @@ export default class Map extends Component {
                             }}
                         />
                     </StandaloneSearchBox>
+                    <Marker
+                        onLoad={onLoadMarker}
+                        position={shootPosition}
+                    />
                     <Circle
                         // optional
                         // onLoad={onLoad}
                         // optional
                         // onUnmount={onUnmount}
                         // required
-                        center={center}
+                        center={circleCenter}
                         // required
                         options={options}
                     />
