@@ -16,11 +16,6 @@ const mapContainerStyle = {
     width: "800px"
 }
 
-const mapCenter = {
-    lat: 37.09024,
-    lng: -95.712891
-}
-
 const options = {
     strokeColor: '#FF0000',
     strokeOpacity: 0.8,
@@ -45,9 +40,13 @@ export default class Map extends Component {
 
         this.state = {
             
-            mapCenter: mapCenter,
+            mapCenter: {
+                lat: 37.09024,
+                lng: -95.712891
+            },
             shootPosition: null,
-            circleCenter: null
+            circleCenter: null,
+            mapZoom: 4,
 
         }
 
@@ -55,7 +54,7 @@ export default class Map extends Component {
     
     render() {
 
-        let { mapCenter, shootPosition, circleCenter } = this.state;
+        let { mapCenter, shootPosition, circleCenter, mapZoom } = this.state;
 
         const onLoadSearchBox = ref => this.searchBox = ref;
 
@@ -70,7 +69,8 @@ export default class Map extends Component {
             this.setState({
 
                 shootPosition: { lat: targetLat, lng: targetLng },
-                mapCenter: { lat: targetLat, lng: targetLng }
+                mapCenter: { lat: targetLat, lng: targetLng },
+                mapZoom: 10
 
             });
             
@@ -85,7 +85,7 @@ export default class Map extends Component {
                 <GoogleMap
                     id="map"
                     mapContainerStyle={mapContainerStyle}
-                    zoom={4}
+                    zoom={mapZoom}
                     center={mapCenter}
                 >
                     <StandaloneSearchBox
