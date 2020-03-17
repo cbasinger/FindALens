@@ -12,8 +12,13 @@ firestore.collection('users').add({ displayName: 'Jorge', position });
 const mapsApiKey = process.env.REACT_APP_MAPS_API_KEY;
 
 const mapContainerStyle = {
-    height: "400px",
-    width: "800px"
+    height: "600px",
+    width: "100vw"
+}
+
+const mapCenter = {
+    lat: 37.09024,
+    lng: -95.712891
 }
 
 const options = {
@@ -26,7 +31,7 @@ const options = {
     draggable: false,
     editable: false,
     visible: true,
-    radius: 30000,
+    radius: 40000,
     zIndex: 1
 }
 
@@ -40,10 +45,7 @@ export default class Map extends Component {
 
         this.state = {
             
-            mapCenter: {
-                lat: 37.09024,
-                lng: -95.712891
-            },
+            mapCenter: mapCenter,
             shootPosition: null,
             circleCenter: null,
             mapZoom: 4,
@@ -63,13 +65,15 @@ export default class Map extends Component {
         }
 
         const onPlacesChanged = () => {
-            //console.log(this.searchBox.getPlaces()[0].geometry.location.lat(), this.searchBox.getPlaces()[0].geometry.location.lng());
+            
             const targetLat = this.searchBox.getPlaces()[0].geometry.location.lat();
             const targetLng = this.searchBox.getPlaces()[0].geometry.location.lng();
+            
             this.setState({
 
-                shootPosition: { lat: targetLat, lng: targetLng },
                 mapCenter: { lat: targetLat, lng: targetLng },
+                shootPosition: { lat: targetLat, lng: targetLng },
+                circleCenter: { lat: targetLat, lng: targetLng },
                 mapZoom: 10
 
             });
