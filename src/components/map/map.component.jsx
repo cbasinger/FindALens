@@ -5,9 +5,12 @@ import * as geofirex from 'geofirex';
 
 /*
 const geo = geofirex.init(firebase);
-const position = geo.point(-84.37, 33.84);
-firestore.collection('users').add({ displayName: 'Jorge', position });
+const position = geo.point(34.008514, -84.382731);
+firestore.collection('users').add({ displayName: 'Sauron', position });
 */
+
+const geo = geofirex.init(firebase);
+//const users = firestore.collection('users');
 
 const mapsApiKey = process.env.REACT_APP_MAPS_API_KEY;
 
@@ -21,7 +24,7 @@ const mapCenter = {
     lng: -95.712891
 }
 
-const options = {
+const circleOptions = {
     strokeColor: '#FF0000',
     strokeOpacity: 0.8,
     strokeWeight: 1,
@@ -44,16 +47,17 @@ export default class Map extends Component {
         super();
 
         this.state = {
-            
+
             mapCenter: mapCenter,
             shootPosition: null,
             circleCenter: null,
             mapZoom: 4,
+            locations: []
 
         }
 
     }
-    
+
     render() {
 
         let { mapCenter, shootPosition, circleCenter, mapZoom } = this.state;
@@ -65,10 +69,12 @@ export default class Map extends Component {
         }
 
         const onPlacesChanged = () => {
-            
+
             const targetLat = this.searchBox.getPlaces()[0].geometry.location.lat();
             const targetLng = this.searchBox.getPlaces()[0].geometry.location.lng();
-            
+
+            onMarkerPosChanged(targetLat, targetLng);
+
             this.setState({
 
                 mapCenter: { lat: targetLat, lng: targetLng },
@@ -77,8 +83,38 @@ export default class Map extends Component {
                 mapZoom: 10
 
             });
-            
+
         }
+
+        
+        const onMarkerPosChanged = (lat, lng) => {
+
+            if(!lat) {
+                lat = mapCenter.lat;
+            }
+
+            if(!lng) {
+                lng = mapCenter.lng;
+            }
+
+            const center = geo.point(lat, lng);
+            const radius = 40;
+            const field = 'position';
+            const users = firebase.firestore().collection('users');
+            const query = geo.query(users).within(center, radius, field);
+
+            query.subscribe(( snapshot ) => { 
+
+                this.setState({
+
+                    locations: snapshot
+
+                })
+
+            });
+
+        }
+        
 
         return (
             <LoadScript
@@ -119,7 +155,22 @@ export default class Map extends Component {
                     <Marker
                         onLoad={onLoadMarker}
                         position={shootPosition}
+                        onPositionChanged={onMarkerPosChanged}
                     />
+                    {
+                        this.state.locations.map(location => {
+
+                            // function to convert to geocode
+                            const lat = location.position.geopoint.Latitude
+                            const lng = location.position.geopoint.Longitude
+
+                            const geocode = {lat: lat, lng: lng}
+
+                            return <Marker position={geocode}/>
+
+                        })
+
+                    }
                     <Circle
                         // optional
                         // onLoad={onLoad}
@@ -128,7 +179,7 @@ export default class Map extends Component {
                         // required
                         center={circleCenter}
                         // required
-                        options={options}
+                        options={circleOptions}
                     />
                 </GoogleMap>
             </LoadScript>
