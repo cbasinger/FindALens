@@ -48,6 +48,7 @@ unsubscribeFromAuth = null
       <div>
         <Header currentUser={this.state.currentUser} />
         <Switch>
+          <Route path='/' component={HomePage} />
           <Route path='/signin' component={SignInandSignUpPage} />
         </Switch>
       </div>

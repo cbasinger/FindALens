@@ -161,12 +161,14 @@ export default class Map extends Component {
                         this.state.locations.map(location => {
 
                             // function to convert to geocode
-                            const lat = location.position.geopoint.Latitude
-                            const lng = location.position.geopoint.Longitude
+                            const lat = location.position.geopoint.O;
+                            const lng = location.position.geopoint.F;
 
-                            const geocode = {lat: lat, lng: lng}
+                            const geohash = location.position.geohash;
 
-                            return <Marker position={geocode}/>
+                            const geocode = {lat: lat, lng: lng};
+
+                            return <Marker key={geohash} position={geocode} />
 
                         })
 

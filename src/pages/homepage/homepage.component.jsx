@@ -23,6 +23,6 @@ export default class HomePage extends React.Component {
                     <button onClick={handleClick}>Click me</button>
                     <Map />
                </div>
-
+               
     }
 }
