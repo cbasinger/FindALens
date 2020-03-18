@@ -13,7 +13,7 @@ const geo = geofirex.init(firebase);
 
 const mapsApiKey = process.env.REACT_APP_MAPS_API_KEY;
 
-const cameraIcon = "camera.png"
+const cameraIcon = "camera.svg"
 
 const mapContainerStyle = {
     height: "600px",
