@@ -10,9 +10,10 @@ firestore.collection('users').add({ displayName: 'Sauron', position });
 */
 
 const geo = geofirex.init(firebase);
-//const users = firestore.collection('users');
 
 const mapsApiKey = process.env.REACT_APP_MAPS_API_KEY;
+
+const cameraIcon = "camera.png"
 
 const mapContainerStyle = {
     height: "600px",
@@ -160,7 +161,6 @@ export default class Map extends Component {
                     {
                         this.state.locations.map(location => {
 
-                            // function to convert to geocode
                             const lat = location.position.geopoint.O;
                             const lng = location.position.geopoint.F;
 
@@ -168,7 +168,7 @@ export default class Map extends Component {
 
                             const geocode = {lat: lat, lng: lng};
 
-                            return <Marker key={geohash} position={geocode} />
+                            return <Marker key={geohash} position={geocode} icon={cameraIcon}/>
 
                         })
 
