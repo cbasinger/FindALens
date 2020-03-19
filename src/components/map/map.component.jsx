@@ -3,12 +3,6 @@ import firebase, { firestore } from '../../firebase/firebase.utils';
 import { GoogleMap, LoadScript, Marker, Circle, StandaloneSearchBox } from '@react-google-maps/api';
 import * as geofirex from 'geofirex';
 
-/*
-const geo = geofirex.init(firebase);
-const position = geo.point(34.008514, -84.382731);
-firestore.collection('users').add({ displayName: 'Sauron', position });
-*/
-
 const geo = geofirex.init(firebase);
 
 const mapsApiKey = process.env.REACT_APP_MAPS_API_KEY;
@@ -65,10 +59,6 @@ export default class Map extends Component {
 
         const onLoadSearchBox = ref => this.searchBox = ref;
 
-        const onLoadMarker = marker => {
-            console.log('marker: ', marker.position)
-        }
-
         const onPlacesChanged = () => {
 
             const targetLat = this.searchBox.getPlaces()[0].geometry.location.lat();
@@ -87,14 +77,14 @@ export default class Map extends Component {
 
         }
 
-        
+
         const onMarkerPosChanged = (lat, lng) => {
 
-            if(!lat) {
+            if (!lat) {
                 lat = mapCenter.lat;
             }
 
-            if(!lng) {
+            if (!lng) {
                 lng = mapCenter.lng;
             }
 
@@ -104,7 +94,7 @@ export default class Map extends Component {
             const users = firebase.firestore().collection('users');
             const query = geo.query(users).within(center, radius, field);
 
-            query.subscribe(( snapshot ) => { 
+            query.subscribe((snapshot) => {
 
                 this.setState({
 
@@ -115,7 +105,7 @@ export default class Map extends Component {
             });
 
         }
-        
+
 
         return (
             <LoadScript
@@ -154,7 +144,6 @@ export default class Map extends Component {
                         />
                     </StandaloneSearchBox>
                     <Marker
-                        onLoad={onLoadMarker}
                         position={shootPosition}
                         onPositionChanged={onMarkerPosChanged}
                     />
@@ -166,9 +155,9 @@ export default class Map extends Component {
 
                             const geohash = location.position.geohash;
 
-                            const geocode = {lat: lat, lng: lng};
+                            const geocode = { lat: lat, lng: lng };
 
-                            return <Marker key={geohash} position={geocode} icon={cameraIcon}/>
+                            return <Marker key={geohash} position={geocode} icon={cameraIcon} />
 
                         })
 
