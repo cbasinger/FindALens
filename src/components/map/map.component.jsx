@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import firebase from '../../firebase/firebase.utils';
-import { GoogleMap, LoadScript, Marker, Circle, StandaloneSearchBox } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, Marker, Circle, StandaloneSearchBox, InfoWindow } from '@react-google-maps/api';
 import * as geofirex from 'geofirex';
 
 const geo = geofirex.init(firebase);
@@ -54,9 +54,17 @@ export default class Map extends Component {
     }
 
     handleMarkerClick() {
-       
-        console.log(this.userId, this.geocode.lat, this.geocode.lng);
-        
+
+        console.log(this.userId, '=>', this.geocode);
+
+            return (
+                <InfoWindow position={this.position}>
+                    <div>
+                        <h1>InfoWindow</h1>
+                    </div>
+                </InfoWindow>
+            )
+
     };
 
     render() {
@@ -100,7 +108,7 @@ export default class Map extends Component {
             const usersWithinArea = geo.query(users).within(center, radius, field);
 
             usersWithinArea.subscribe((snapshot) => {
-                
+
                 this.setState({
 
                     users: snapshot
@@ -155,15 +163,15 @@ export default class Map extends Component {
                     {
                         this.state.users.map(user => {
 
-                            const userId = user.id; 
+                            const userId = user.id;
+
                             const lat = user.position.geopoint.O;
                             const lng = user.position.geopoint.F;
+                            const geocode = { lat: lat, lng: lng };
 
                             const geohash = user.position.geohash;
 
-                            const geocode = { lat: lat, lng: lng };
-
-                            return <Marker key={geohash} position={geocode} icon={cameraIcon} options={{userId, geocode}} onClick={this.handleMarkerClick} />
+                            return <Marker key={userId} position={geocode} icon={cameraIcon} options={{ userId, geocode, geohash }} onClick={this.handleMarkerClick} />
 
                         })
                     }
