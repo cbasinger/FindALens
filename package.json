@@ -25,7 +25,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "https://api.geocod.io",
+  "proxy": "https://maps.googleapis.com",
   "eslintConfig": {
     "extends": "react-app"
   },

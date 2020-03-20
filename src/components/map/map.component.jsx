@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import firebase, { firestore } from '../../firebase/firebase.utils';
+import firebase from '../../firebase/firebase.utils';
 import { GoogleMap, LoadScript, Marker, Circle, StandaloneSearchBox } from '@react-google-maps/api';
 import * as geofirex from 'geofirex';
 
@@ -47,11 +47,17 @@ export default class Map extends Component {
             shootPosition: null,
             circleCenter: null,
             mapZoom: 4,
-            locations: []
+            users: []
 
         }
 
     }
+
+    handleMarkerClick() {
+       
+        console.log(this.userId, this.geocode.lat, this.geocode.lng);
+        
+    };
 
     render() {
 
@@ -77,7 +83,6 @@ export default class Map extends Component {
 
         }
 
-
         const onMarkerPosChanged = (lat, lng) => {
 
             if (!lat) {
@@ -92,13 +97,13 @@ export default class Map extends Component {
             const radius = 40;
             const field = 'position';
             const users = firebase.firestore().collection('users');
-            const query = geo.query(users).within(center, radius, field);
+            const usersWithinArea = geo.query(users).within(center, radius, field);
 
-            query.subscribe((snapshot) => {
-
+            usersWithinArea.subscribe((snapshot) => {
+                
                 this.setState({
 
-                    locations: snapshot
+                    users: snapshot
 
                 })
 
@@ -148,19 +153,19 @@ export default class Map extends Component {
                         onPositionChanged={onMarkerPosChanged}
                     />
                     {
-                        this.state.locations.map(location => {
+                        this.state.users.map(user => {
 
-                            const lat = location.position.geopoint.O;
-                            const lng = location.position.geopoint.F;
+                            const userId = user.id; 
+                            const lat = user.position.geopoint.O;
+                            const lng = user.position.geopoint.F;
 
-                            const geohash = location.position.geohash;
+                            const geohash = user.position.geohash;
 
                             const geocode = { lat: lat, lng: lng };
 
-                            return <Marker key={geohash} position={geocode} icon={cameraIcon} />
+                            return <Marker key={geohash} position={geocode} icon={cameraIcon} options={{userId, geocode}} onClick={this.handleMarkerClick} />
 
                         })
-
                     }
                     <Circle
                         // optional
