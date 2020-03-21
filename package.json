@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^4.9.5",
-    "@react-google-maps/api": "^1.8.5",
+    "@material-ui/core": "^4.9.7",
+    "@react-google-maps/api": "^1.8.6",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -12,11 +12,11 @@
     "firebase": "^7.10.0",
     "geofirex": "^0.1.0",
     "node-sass": "^4.13.1",
-    "react": "^16.13.0",
-    "react-dom": "^16.13.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "react-geocode": "^0.2.1",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.0",
+    "react-scripts": "^3.4.1",
     "rxjs": "^6.5.4"
   },
   "scripts": {
