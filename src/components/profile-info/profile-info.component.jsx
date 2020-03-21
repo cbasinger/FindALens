@@ -11,8 +11,10 @@ class ProfileInfo extends React.Component {
     constructor(){
         super();
         this.state = {
-            displayName: '',
+            first_name: '',
+            last_name: '',
             email: '',
+            phone: '',
             address_line_1: '',
             address_line_2: '',
             city: '',
@@ -23,16 +25,18 @@ class ProfileInfo extends React.Component {
     }
     handleSubmit = async event => {
         event.preventDefault();
-        const {displayName, email, address_line_1, address_line_2,city,state_province,zip} = this.state;
+        const {first_name, last_name, email, phone, address_line_1, address_line_2,city,state_province,zip} = this.state;
             try {
             this.setState({
-                displayName: '',
-                email: '',
-                address_line_1:'',
-                address_line_2:'',
-                city: '',
-                state_province: '',
-                zip: ''
+            first_name: '',
+            last_name: '',
+            email: '',
+            phone: '',
+            address_line_1: '',
+            address_line_2: '',
+            city: '',
+            state_province: '',
+            zip: '' 
             })
         } catch (error) {
             console.log(error);
@@ -44,7 +48,7 @@ class ProfileInfo extends React.Component {
         this.setState({ [name]: value })
     }
     render(){
-        const {displayName, email, address_line_1, address_line_2,city,state_province,zip} = this.state;
+        const {first_name, last_name, email, phone, address_line_1, address_line_2,city,state_province,zip} = this.state;
 
         return(
             <div className='update-info'>
@@ -54,18 +58,34 @@ class ProfileInfo extends React.Component {
                 <form className='profile-info' onSubmit={this.handleSubmit} >
                 <FormInput
                         type='text'
-                        name='displayName'
-                        value= {displayName}
+                        name='firstname'
+                        value= {first_name}
                         onChange= {this.handleChange}
-                        label='Display Name'
+                        label='First Name'
                         required
                     />
+                <FormInput
+                        type='text'
+                        name='lastname'
+                        value= {last_name}
+                        onChange= {this.handleChange}
+                        label='Last Name'
+                        required
+                />
                 <FormInput
                         type='email'
                         name='email'
                         value= {email}
                         onChange= {this.handleChange}
                         label='Email'
+                        required
+                    />
+                <FormInput
+                        type='text'
+                        name='phone'
+                        value= {phone}
+                        onChange= {this.handleChange}
+                        label='Phone'
                         required
                     />
                 <FormInput
