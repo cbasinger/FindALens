@@ -50,6 +50,7 @@ unsubscribeFromAuth = null
         <Switch>
           <Route path='/' component={HomePage} />
           <Route path='/signin' component={SignInandSignUpPage} />
+          <Route path='/user/:id' />
         </Switch>
       </div>
       );

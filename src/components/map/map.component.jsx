@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom'
 import firebase from '../../firebase/firebase.utils';
 import { GoogleMap, LoadScript, Marker, Circle, StandaloneSearchBox, InfoWindow } from '@react-google-maps/api';
+import CustomMarker from './CustomMarker'
 import * as geofirex from 'geofirex';
 
 const geo = geofirex.init(firebase);
@@ -47,25 +49,48 @@ export default class Map extends Component {
             shootPosition: null,
             circleCenter: null,
             mapZoom: 4,
-            users: []
+            users: [],
+            showInfoWindow: false,
+            infoWindow: {
+
+                position: {},
+                title: "",
+                userId: ""
+            }
 
         }
 
+        this.handleMarkerClick = this.handleMarkerClick.bind(this)
+        this.closeInfoWindow = this.closeInfoWindow.bind(this)
+
     }
 
-    handleMarkerClick() {
+    handleMarkerClick(e, props) {
 
-        console.log(this.userId, '=>', this.geocode);
+        this.setState({
 
-            return (
-                <InfoWindow position={this.position}>
-                    <div>
-                        <h1>InfoWindow</h1>
-                    </div>
-                </InfoWindow>
-            )
+            showInfoWindow: true,
+
+            infoWindow: {
+
+                position: props.position,
+                title: props.user.displayName,
+                userId: props.user.id
+            }
+
+        })
 
     };
+
+    closeInfoWindow() {
+
+        this.setState({
+
+            showInfoWindow: false
+
+        })
+
+    }
 
     render() {
 
@@ -171,9 +196,18 @@ export default class Map extends Component {
 
                             const geohash = user.position.geohash;
 
-                            return <Marker key={userId} position={geocode} icon={cameraIcon} options={{ userId, geocode, geohash }} onClick={this.handleMarkerClick} />
+                            return <CustomMarker user={user} key={userId} position={geocode} icon={cameraIcon} options={{ userId, geocode, geohash }} onMarkerClick={this.handleMarkerClick} />
 
                         })
+                    }
+                    {
+                        this.state.showInfoWindow &&
+                        <InfoWindow position={this.state.infoWindow.position} onCloseClick={this.closeInfoWindow}>
+                            <div>
+                                <h1>{this.state.infoWindow.title}</h1>
+                                <Link to={`/user/${this.state.infoWindow.userId}`}>Profile</Link>
+                            </div>
+                        </InfoWindow>
                     }
                     <Circle
                         // optional
