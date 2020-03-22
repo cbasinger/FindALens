@@ -194,17 +194,17 @@ export default class Map extends Component {
 
                             const lat = user.position.geopoint.O;
                             const lng = user.position.geopoint.F;
-                            const geocode = { lat: lat, lng: lng };
+                            const geocode = { lat: lat, lng: lng};
 
                             const geohash = user.position.geohash;
 
-                            return <CustomMarker user={user} key={userId} position={geocode} icon={cameraIcon} options={{ userId, geocode, geohash }} onMarkerClick={this.handleMarkerClick} />
+                            return <CustomMarker user={user} key={userId} position={geocode} icon={cameraIcon} options={{ userId, geocode, geohash, }} onMarkerClick={this.handleMarkerClick} />
 
                         })
                     }
                     {
                         this.state.showInfoWindow &&
-                        <InfoWindow position={this.state.infoWindow.position} onCloseClick={this.closeInfoWindow}>
+                        <InfoWindow position={this.state.infoWindow.position} onCloseClick={this.closeInfoWindow} options={{ pixelOffset: {width: 0, height: -40, widthUnit: "px", heightUnit: "px" }}}>
                             <div>
                                 <h1>{this.state.infoWindow.title}</h1>
                                 <Link to={`/user/${this.state.infoWindow.userId}`}>Profile</Link>
