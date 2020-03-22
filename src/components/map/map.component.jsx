@@ -55,7 +55,8 @@ export default class Map extends Component {
 
                 position: {},
                 title: "",
-                userId: ""
+                userId: "",
+
             }
 
         }
@@ -110,7 +111,7 @@ export default class Map extends Component {
                 mapCenter: { lat: targetLat, lng: targetLng },
                 shootPosition: { lat: targetLat, lng: targetLng },
                 circleCenter: { lat: targetLat, lng: targetLng },
-                mapZoom: 10
+                mapZoom: 10,
 
             });
 
@@ -136,7 +137,8 @@ export default class Map extends Component {
 
                 this.setState({
 
-                    users: snapshot
+                    showInfoWindow: false,
+                    users: snapshot,
 
                 })
 
