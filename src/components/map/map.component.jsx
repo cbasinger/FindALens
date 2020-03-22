@@ -5,6 +5,9 @@ import { GoogleMap, LoadScript, Marker, Circle, StandaloneSearchBox, InfoWindow 
 import CustomMarker from './CustomMarker'
 import * as geofirex from 'geofirex';
 
+//material-ui
+import Button from '@material-ui/core/Button';
+
 const geo = geofirex.init(firebase);
 
 const mapsApiKey = process.env.REACT_APP_MAPS_API_KEY;
@@ -207,7 +210,11 @@ export default class Map extends Component {
                         <InfoWindow position={this.state.infoWindow.position} onCloseClick={this.closeInfoWindow} options={{ pixelOffset: {width: 0, height: -40, widthUnit: "px", heightUnit: "px" }}}>
                             <div>
                                 <h1>{this.state.infoWindow.title}</h1>
-                                <Link to={`/user/${this.state.infoWindow.userId}`}>Profile</Link>
+                                <Link to={`/user/${this.state.infoWindow.userId}`}>
+                                    <Button variant="contained" color="secondary">
+                                        Profile
+                                    </Button>
+                                </Link>
                             </div>
                         </InfoWindow>
                     }
