@@ -2,7 +2,7 @@ import { firestore } from '../../firebase/firebase.utils';
 import React from 'react';
 import Map from '../../components/map/map.component';
 
-function handleClick(e) {
+/* function handleClick(e) {
     e.preventDefault();
     firestore.collection("users").get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
@@ -12,7 +12,7 @@ function handleClick(e) {
     .catch((error) => {
         console.log("Error getting document:", error);
     });
-}
+} */
 
 
 export default class HomePage extends React.Component {
@@ -20,7 +20,6 @@ export default class HomePage extends React.Component {
     render() {
 
         return <div>
-                    <button onClick={handleClick}>Click me</button>
                     <Map />
                </div>
                
