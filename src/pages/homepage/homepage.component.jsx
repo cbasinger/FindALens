@@ -22,7 +22,7 @@ export default class HomePage extends React.Component {
         return <div>
                     <button onClick={handleClick}>Click me</button>
                     <Map />
-               </div>
-               
+            </div>
+
     }
 }
