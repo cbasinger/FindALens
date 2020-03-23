@@ -8,7 +8,6 @@ import * as geofirex from 'geofirex';
 
 /*******************material-ui************************/
 
-
 //import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -93,7 +92,10 @@ export default class Map extends Component {
 
                 position: props.position,
                 title: props.user.displayName,
-                userId: props.user.id
+                userId: props.user.id,
+                profile_pic: props.user.profile_pic,
+                img_url: props.user.img_url,
+
             }
 
         })
@@ -226,17 +228,17 @@ export default class Map extends Component {
                                 <CardActionArea>
                                     <CardMedia
                                         component="img"
-                                        alt="Contemplative Reptile"
-                                        height="140"
-                                        image={cameraIcon}
-                                        title="Contemplative Reptile"
+                                        alt={this.state.infoWindow.title}
+                                        height="100"
+                                        image={this.state.infoWindow.img_url}
+                                        title="Profile Pic"
                                     />
+                                    </CardActionArea>
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="h2">
                                             {this.state.infoWindow.title}
                                         </Typography>
-                                    </CardContent>
-                                </CardActionArea>
+                                    </CardContent> 
                                 <CardActions>
                                     <Link to={`/user/${this.state.infoWindow.userId}`}>
                                         <Button variant="contained" color="secondary">Profile</Button>
