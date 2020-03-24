@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import firebase from '../../firebase/firebase.utils';
 import { GoogleMap, LoadScript, Marker, Circle, StandaloneSearchBox, InfoWindow } from '@react-google-maps/api';
 import CustomMarker from './CustomMarker'
+import ViewProfile from '../view-profile/viewprofile.component';
 import * as geofirex from 'geofirex';
 
 import Button from 'react-bootstrap/Button'
@@ -41,6 +42,8 @@ const circleOptions = {
 }
 
 const placesLib = ["places"]
+
+// Profile should go here: to={`/user/${this.state.infoWindow.userId}`}
 
 export default class Map extends Component {
 
@@ -220,7 +223,7 @@ export default class Map extends Component {
                                     <Card.Text>
                                         Check out my work!
                                     </Card.Text>
-                                    <LinkContainer to={`/user/${this.state.infoWindow.userId}`}>
+                                    <LinkContainer to={ViewProfile}>
                                         <Button variant="info">Profile</Button>
                                     </LinkContainer>
                                 </Card.Body>
