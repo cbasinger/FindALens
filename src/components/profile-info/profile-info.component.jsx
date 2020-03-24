@@ -12,7 +12,6 @@ import CustomButton from '../custom button/custom-button.component';
 import { Checkbox } from '@material-ui/core';
 
 import './profile-info.styles.scss';
-import CheckoutPage from '../../pages/checkout/checkout.component';
 
 // set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
 Geocode.setApiKey(`AIzaSyDMGisNx0DgItQ35EGeuTKh4M3Cj4QGbc4`);
@@ -50,26 +49,36 @@ class ProfileInfo extends React.Component {
     handleSubmit = async event => {
         
         event.preventDefault();
+
         createProfileInfo();
         this.convertToGeocode();
         
         /* const userRef = firebase.database().ref('users');
+
+
         
-        const snapShot = await userRef.get();
-        if( !snapShot.exists ) {
-            userRef.set({
-            first_name: this.state.first_name,
-            last_name: this.state.last_name,
-            email: this.state.email,
-            phone: this.state.phone,
-            address_line_1: this.state.address_line_1,
-            address_line_2: this.state.address_line_2,
-            city: this.state.city,
-            state_province: this.state.state_province,
-            zip: this.state.zip,
-            is_photographer: true
+        const usersRef = () => {firebase.firestore().collection('users')};
+        const snapShot = await usersRef.get;
+
+/*         const {first_name, last_name, email, phone, address_line_1, address_line_2, city, state_province, zip, is_photographer} = this.state;
+ */        
+        const addInfo = () => {
+                usersRef.push() ({
+                first_name: this.state.first_name,
+                last_name: this.state.last_name,
+                email: this.state.email,
+                phone: this.state.phone,
+                address_line_1: this.state.address_line_1,
+                address_line_2: this.state.address_line_2,
+                city: this.state.city,
+                state_province: this.state.state_province,
+                zip: this.state.zip,
+                is_photographer: true
         });
-    }  */
+        
+        console.log(addInfo);
+    }
+            
         this.setState({
             first_name: '',
             last_name: '',
@@ -145,7 +154,7 @@ class ProfileInfo extends React.Component {
                         value={this.state.phone}
                         onChange={this.handleChange}
                         label='Phone'
-                        required
+                        
                     />
                     <FormInput
                         type='text'

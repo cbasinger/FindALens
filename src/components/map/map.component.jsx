@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import firebase from '../../firebase/firebase.utils';
 import { GoogleMap, LoadScript, Marker, Circle, StandaloneSearchBox, InfoWindow } from '@react-google-maps/api';
 import CustomMarker from './CustomMarker'
-import ViewProfile from '../view-profile/viewprofile.component';
+/* import ViewProfile from '../view-profile/viewprofile.component'; */
 import * as geofirex from 'geofirex';
 
 import Button from 'react-bootstrap/Button'
@@ -215,6 +215,7 @@ export default class Map extends Component {
                     {
                         this.state.showInfoWindow &&
 
+
                         <InfoWindow position={this.state.infoWindow.position} onCloseClick={this.closeInfoWindow} options={{ pixelOffset: { width: 0, height: -40, widthUnit: "px", heightUnit: "px" } }}>
                             <Card style={{ width: "175px" }}>
                                 <Card.Img variant="top" src={this.state.infoWindow.img_url} />
@@ -228,6 +229,7 @@ export default class Map extends Component {
                                     </LinkContainer>
                                 </Card.Body>
                             </Card>
+
                         </InfoWindow>
                     }
                     <Circle

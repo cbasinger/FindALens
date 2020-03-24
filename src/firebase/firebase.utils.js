@@ -40,15 +40,11 @@ const config =
         return userRef;
 
     };
-    export const createProfileInfo = async (userAuth) => {
-        const userRef = firestore.doc(`users/${userAuth}`);
+        export const createProfileInfo = async () => {
+        const ref = firebase.app().database().ref();
+        const usersRef = firestore.collection('users').doc;
 
-        const snapShot = await userRef.get();
-        
-        if( !snapShot.exists ) {
-            /* const { email } = userAuth; */
-            try {
-            await userRef.set({
+            try {await usersRef.set({
                 first_name: this.state.first_name,
                 last_name: this.state.last_name,
                 email: this.state.email,
@@ -59,13 +55,14 @@ const config =
                 state_province: this.state.state_province,
                 zip: this.state.zip,
                 is_photographer: true
-            })
+            });
         } catch (error) {
                 console.log('error creating user', error.message);
     }
-} 
-        return userRef;
-};    
+    return usersRef;
+}  
+        
+    
 
     firebase.initializeApp(config);
 
