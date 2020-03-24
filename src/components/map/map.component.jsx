@@ -221,7 +221,7 @@ export default class Map extends Component {
                                         Check out my work!
                                     </Card.Text>
                                     <LinkContainer to={`/user/${this.state.infoWindow.userId}`}>
-                                        <Button variant="secondary">Profile</Button>
+                                        <Button variant="info">Profile</Button>
                                     </LinkContainer>
                                 </Card.Body>
                             </Card>
