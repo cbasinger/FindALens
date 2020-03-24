@@ -29,7 +29,7 @@ class Header extends React.Component {
 
         return (
 
-                <Navbar bg="light" expand="lg" sticky="top">
+                <Navbar bg="light" expand="lg" sticky="top" collapseOnSelect="true">
                     <LinkContainer className='logo-container' to='/'>
                         <Navbar.Brand>FIND A LENS</Navbar.Brand>
                     </LinkContainer>
