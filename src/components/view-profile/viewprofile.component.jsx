@@ -2,7 +2,7 @@ import React from 'react';
 
 
 import firebase from 'firebase';
-import 'firebase/firestore';
+import firestore from 'firebase/firestore';
 
 import './viewprofile.styles.scss';
 
@@ -11,7 +11,7 @@ class ViewProfile extends React.Component {
     constructor(){
         super();
         this.state = {
-            first_name: '',
+            /* first_name: '',
             last_name: '',
             email: '',
             phone: '',
@@ -20,7 +20,7 @@ class ViewProfile extends React.Component {
             city: '',
             state_province: '',
             zip: '',
-            is_photographer: ''       
+            is_photographer: ''   */     
     };
 }
 render() {
