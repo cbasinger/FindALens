@@ -1,14 +1,17 @@
 import React from 'react';
 
 
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import 'firebase/firestore';
+import 'firebase/auth';
 
-
+import { createProfileInfo } from '../../firebase/firebase.utils';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom button/custom-button.component';
+import { Checkbox } from '@material-ui/core';
 
 import './profile-info.styles.scss';
+import CheckoutPage from '../../pages/checkout/checkout.component';
 
 class ProfileInfo extends React.Component {
     constructor(){
@@ -22,14 +25,19 @@ class ProfileInfo extends React.Component {
             address_line_2: '',
             city: '',
             state_province: '',
-            zip: ''        
+            zip: '',
+            is_photographer: true       
     };
         
     }
     handleSubmit = async event => {
         event.preventDefault();
-        const db = firebase.firestore();
-        const userRef = db.collection('user-example').add({
+        createProfileInfo();
+        /* const userRef = firebase.database().ref('users');
+        
+        const snapShot = await userRef.get();
+        if( !snapShot.exists ) {
+            userRef.set({
             first_name: this.state.first_name,
             last_name: this.state.last_name,
             email: this.state.email,
@@ -38,8 +46,10 @@ class ProfileInfo extends React.Component {
             address_line_2: this.state.address_line_2,
             city: this.state.city,
             state_province: this.state.state_province,
-            zip: this.state.zip
+            zip: this.state.zip,
+            is_photographer: true
         });
+    }  */
         this.setState({
             first_name: '',
             last_name: '',
@@ -49,7 +59,8 @@ class ProfileInfo extends React.Component {
             address_line_2: '',
             city: '',
             state_province: '',
-            zip: '' 
+            zip: '',
+            is_photographer: true
             }); 
     };
     handleChange = event => {
@@ -136,6 +147,12 @@ class ProfileInfo extends React.Component {
                         label='Zip Code'
                         required
                     />
+                <h5>Are you a photographer?</h5>
+                <Checkbox 
+                checked={this.checked}
+                onChange={this.handleChange}>
+                    
+                </Checkbox>
                 <div className='buttons'>
                 <CustomButton type="submit"> Save Changes </CustomButton>
                     

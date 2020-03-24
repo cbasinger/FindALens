@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import firebase from '../../firebase/firebase.utils';
 import { GoogleMap, LoadScript, Marker, Circle, StandaloneSearchBox, InfoWindow } from '@react-google-maps/api';
 import CustomMarker from './CustomMarker'
+import ViewProfile from '../view-profile/viewprofile.component';
 import * as geofirex from 'geofirex';
 
 const geo = geofirex.init(firebase);
@@ -207,7 +208,7 @@ export default class Map extends Component {
                         <InfoWindow position={this.state.infoWindow.position} onCloseClick={this.closeInfoWindow}>
                             <div>
                                 <h1>{this.state.infoWindow.title}</h1>
-                                <Link to={`/user/${this.state.infoWindow.userId}`}>Profile</Link>
+                                <Link to={ViewProfile}>Profile</Link>
                             </div>
                         </InfoWindow>
                     }
