@@ -5,21 +5,11 @@ import { GoogleMap, LoadScript, Marker, Circle, StandaloneSearchBox, InfoWindow 
 import CustomMarker from './CustomMarker'
 import * as geofirex from 'geofirex';
 
+import Button from 'react-bootstrap/Button'
+import Card from 'react-bootstrap/Card'
 
-/*******************material-ui************************/
+import { LinkContainer } from 'react-router-bootstrap';
 
-//import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-
-import 'typeface-roboto';
-
-/*****************************************************/
 
 const geo = geofirex.init(firebase);
 
@@ -224,37 +214,22 @@ export default class Map extends Component {
                         this.state.showInfoWindow &&
 
                         <InfoWindow position={this.state.infoWindow.position} onCloseClick={this.closeInfoWindow} options={{ pixelOffset: { width: 0, height: -40, widthUnit: "px", heightUnit: "px" } }}>
-                            <Card>
-                                <CardActionArea>
-                                    <CardMedia
-                                        component="img"
-                                        alt={this.state.infoWindow.title}
-                                        height="100"
-                                        image={this.state.infoWindow.img_url}
-                                        title="Profile Pic"
-                                    />
-                                    </CardActionArea>
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                            {this.state.infoWindow.title}
-                                        </Typography>
-                                    </CardContent> 
-                                <CardActions>
-                                    <Link to={`/user/${this.state.infoWindow.userId}`}>
-                                        <Button variant="contained" color="secondary">Profile</Button>
-                                    </Link>
-                                </CardActions>
+                            <Card style={{ width: "175px" }}>
+                                <Card.Img variant="top" src={this.state.infoWindow.img_url} />
+                                <Card.Body>
+                                    <Card.Title>{this.state.infoWindow.title}</Card.Title>
+                                    <Card.Text>
+                                        Check out my work!
+                                    </Card.Text>
+                                    <LinkContainer to={`/user/${this.state.infoWindow.userId}`}>
+                                        <Button variant="secondary">Profile</Button>
+                                    </LinkContainer>
+                                </Card.Body>
                             </Card>
                         </InfoWindow>
                     }
                     <Circle
-                        // optional
-                        // onLoad={onLoad}
-                        // optional
-                        // onUnmount={onUnmount}
-                        // required
                         center={circleCenter}
-                        // required
                         options={circleOptions}
                     />
                 </GoogleMap>
