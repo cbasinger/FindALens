@@ -1,44 +1,66 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-
 
 import { auth } from '../../firebase/firebase.utils';
 import CartIcon from '../cart-icon/cart-icon.component';
 import CartDropdown from '../cart-dropdown/cart-dropdown.component';
 
 import { selectCurrentUser } from '../../redux/user/user.selector';
-import { selectCartHidden } from '../../redux/cart/cart.selectors'; 
+import { selectCartHidden } from '../../redux/cart/cart.selectors';
 
-import './header.styles.scss';
+import { LinkContainer } from 'react-router-bootstrap';
 
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
 
-const Header = ({ currentUser, hidden }) => (
-    <div className='header'>
-        <Link className= 'logo-container' to='/'>
-        FIND A LENS
-        </Link>
-        <div className='options'>
-            <Link className='option' to= '/contact'>
-                CONTACT
-            </Link>
-            <Link className='option' to='/profile' >
-                PROFILE
-            </Link>
-                {currentUser ? (
-                    <div className='option' onClick={() => auth.signOut()} > Sign Out
-                    </div>) 
-                    : (
-                    <Link className='option' to='/signin'> SIGN IN </Link>
-                    )}
-            <CartIcon />
-        </div>
-            {
-                hidden ? null : <CartDropdown />
-            }
-    </div>
-);
+class Header extends React.Component {
+
+    constructor(props) {
+
+        super(props);
+
+    }
+
+    render() {
+
+        const currentUser = this.props.currentUser;
+        const hidden = this.props.hidden;
+
+        return (
+
+                <Navbar bg="primary" variant="dark" expand="lg" sticky="top" collapseOnSelect="true">
+                    <LinkContainer className='logo-container' to='/'>
+                        <Navbar.Brand>FIND A LENS</Navbar.Brand>
+                    </LinkContainer>
+                    <Navbar.Toggle aria-controls="navbar-nav" />
+                    <Navbar.Collapse id="navbar-nav">
+                        <Nav className="mr-auto">
+                            <LinkContainer className='option' to='/contact'>
+                                <Nav.Link>CONTACT</Nav.Link>
+                            </LinkContainer>
+                            <LinkContainer className='option' to='/profile' >
+                                <Nav.Link>PROFILE</Nav.Link>
+                            </LinkContainer>
+                            {currentUser ? (
+                                <div className='option' onClick={() => auth.signOut()} > Sign Out
+                                </div>)
+                                : (
+                                    <LinkContainer className='option' to='/signin'>
+                                        <Nav.Link>SIGN IN</Nav.Link>
+                                    </LinkContainer>
+                                )}
+                            <CartIcon />
+                            {
+                                hidden ? null : <CartDropdown />
+                            }
+                        </Nav>
+                    </Navbar.Collapse>
+                </Navbar>
+
+        )
+    }
+}
 
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,

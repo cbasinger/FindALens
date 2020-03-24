@@ -50,7 +50,7 @@ const {setCurrentUser} = this.props;
       <div>
         <Header  />
         <Switch>
-          
+          <Route exact path='/' component={HomePage} />
           <Route path='/user/:id' />
           <Route path='/contact' component={ContactPage} />
           <Route path='/profile' component={ProfilePage} />

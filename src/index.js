@@ -5,8 +5,12 @@ import { Provider } from 'react-redux';
 
 
 
+
 import './index.css';
+
 import App from './App';
+
+import "bootswatch/dist/materia/bootstrap.min.css";
 
 import store from './redux/store';
 

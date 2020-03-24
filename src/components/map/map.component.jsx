@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
 import firebase from '../../firebase/firebase.utils';
 import { GoogleMap, LoadScript, Marker, Circle, StandaloneSearchBox, InfoWindow } from '@react-google-maps/api';
 import CustomMarker from './CustomMarker'
 /* import ViewProfile from '../view-profile/viewprofile.component'; */
 import * as geofirex from 'geofirex';
+
+import Button from 'react-bootstrap/Button'
+import Card from 'react-bootstrap/Card'
+
+import { LinkContainer } from 'react-router-bootstrap';
+
 
 const geo = geofirex.init(firebase);
 
@@ -37,6 +42,8 @@ const circleOptions = {
 }
 
 const placesLib = ["places"]
+
+// Profile should go here: to={`/user/${this.state.infoWindow.userId}`}
 
 export default class Map extends Component {
 
@@ -77,7 +84,10 @@ export default class Map extends Component {
 
                 position: props.position,
                 title: props.user.displayName,
-                userId: props.user.id
+                userId: props.user.id,
+                profile_pic: props.user.profile_pic,
+                img_url: props.user.img_url,
+
             }
 
         })
@@ -147,7 +157,6 @@ export default class Map extends Component {
 
         }
 
-
         return (
             <LoadScript
                 id="script-loader"
@@ -199,27 +208,32 @@ export default class Map extends Component {
 
                             const geohash = user.position.geohash;
 
-                            return <CustomMarker user={user} key={userId} position={geocode} icon={cameraIcon} options={{ userId, geocode, geohash }} onMarkerClick={this.handleMarkerClick} />
+                            return <CustomMarker user={user} key={userId} position={geocode} icon={cameraIcon} options={{ userId, geocode, geohash, }} onMarkerClick={this.handleMarkerClick} />
 
                         })
                     }
                     {
                         this.state.showInfoWindow &&
-                        <InfoWindow position={this.state.infoWindow.position} onCloseClick={this.closeInfoWindow}>
-                            <div>
-                                <h1>{this.state.infoWindow.title}</h1>
-                                <Link>Profile</Link>
-                            </div>
+
+
+                        <InfoWindow position={this.state.infoWindow.position} onCloseClick={this.closeInfoWindow} options={{ pixelOffset: { width: 0, height: -40, widthUnit: "px", heightUnit: "px" } }}>
+                            <Card style={{ width: "175px" }}>
+                                <Card.Img variant="top" src={this.state.infoWindow.img_url} />
+                                <Card.Body>
+                                    <Card.Title>{this.state.infoWindow.title}</Card.Title>
+                                    <Card.Text>
+                                        Check out my work!
+                                    </Card.Text>
+                                    <LinkContainer to={`/user/${this.state.infoWindow.userId}`}>
+                                        <Button variant="info">Profile</Button>
+                                    </LinkContainer>
+                                </Card.Body>
+                            </Card>
+
                         </InfoWindow>
                     }
                     <Circle
-                        // optional
-                        // onLoad={onLoad}
-                        // optional
-                        // onUnmount={onUnmount}
-                        // required
                         center={circleCenter}
-                        // required
                         options={circleOptions}
                     />
                 </GoogleMap>
