@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
@@ -10,42 +9,18 @@ import CartDropdown from '../cart-dropdown/cart-dropdown.component';
 import { selectCurrentUser } from '../../redux/user/user.selector';
 import { selectCartHidden } from '../../redux/cart/cart.selectors';
 
-import './header.styles.scss';
+import { LinkContainer } from 'react-router-bootstrap';
 
-import {
-    Collapse,
-    Navbar,
-    NavbarToggler,
-    NavbarBrand,
-    Nav,
-    NavItem,
-    NavLink,
-    Container,
-    Row,
-    Col,
-    Button
-} from 'reactstrap';
-
-
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
 
 class Header extends React.Component {
 
     constructor(props) {
 
         super(props);
-        this.toggle = this.toggle.bind(this);
-        this.state = {
-            isOpen: false
-        };
 
     }
-
-    toggle() {
-        this.setState({
-            isOpen: !this.state.isOpen
-        });
-    }
-
 
     render() {
 
@@ -53,44 +28,36 @@ class Header extends React.Component {
         const hidden = this.props.hidden;
 
         return (
-            <div className='header'>
-                <Navbar color="inverse" light expand="md">
-                    <Link className='logo-container' to='/'>
-                        <NavbarBrand href="/">FIND A LENS</NavbarBrand>
-                    </Link>
-                    <NavbarToggler onClick={this.toggle} />
-                    <Collapse isOpen={this.state.isOpen} navbar>
-                        <Nav className="ml-auto" navbar>
-                            <div className='options'>
-                                <Link className='option' to='/contact'>
-                                    <NavItem>
-                                        CONTACT
-                                    </NavItem>
-                                </Link>
-                                <Link className='option' to='/profile' >
-                                    <NavItem>
-                                        PROFILE
-                            </NavItem>
-                                </Link>
-                                {currentUser ? (
-                                    <div className='option' onClick={() => auth.signOut()} > Sign Out
-                                    </div>)
-                                    : (
-                                        <Link className='option' to='/signin'>
-                                            <NavItem>
-                                                SIGN IN
-                                            </NavItem>
-                                        </Link>
-                                    )}
-                                <CartIcon />
-                            </div>
+
+                <Navbar bg="light" expand="lg" sticky="top">
+                    <LinkContainer className='logo-container' to='/'>
+                        <Navbar.Brand>FIND A LENS</Navbar.Brand>
+                    </LinkContainer>
+                    <Navbar.Toggle aria-controls="navbar-nav" />
+                    <Navbar.Collapse id="navbar-nav">
+                        <Nav className="mr-auto">
+                            <LinkContainer className='option' to='/contact'>
+                                <Nav.Link>CONTACT</Nav.Link>
+                            </LinkContainer>
+                            <LinkContainer className='option' to='/profile' >
+                                <Nav.Link>PROFILE</Nav.Link>
+                            </LinkContainer>
+                            {currentUser ? (
+                                <div className='option' onClick={() => auth.signOut()} > Sign Out
+                                </div>)
+                                : (
+                                    <LinkContainer className='option' to='/signin'>
+                                        <Nav.Link>SIGN IN</Nav.Link>
+                                    </LinkContainer>
+                                )}
+                            <CartIcon />
                             {
                                 hidden ? null : <CartDropdown />
                             }
                         </Nav>
-                    </Collapse>
+                    </Navbar.Collapse>
                 </Navbar>
-            </div>
+
         )
     }
 }
