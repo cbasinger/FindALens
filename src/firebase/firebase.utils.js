@@ -2,6 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 
+
 const config = 
     {
         apiKey: "AIzaSyAMF5NIm4U21YwTNPsmi5_r92ABs-GvhMk",
@@ -24,7 +25,6 @@ const config =
         if( !snapShot.exists ) {
             const { displayName, email } = userAuth;
             const createdAt = new Date();
-            
             try {
                 await userRef.set({
                     displayName,
@@ -39,7 +39,33 @@ const config =
         }
         return userRef;
 
+    };
+    export const createProfileInfo = async (userAuth) => {
+        const userRef = firestore.doc(`users/${userAuth}`);
+
+        const snapShot = await userRef.get();
+        
+        if( !snapShot.exists ) {
+            /* const { email } = userAuth; */
+            try {
+            await userRef.set({
+                first_name: this.state.first_name,
+                last_name: this.state.last_name,
+                email: this.state.email,
+                phone: this.state.phone,
+                address_line_1: this.state.address_line_1,
+                address_line_2: this.state.address_line_2,
+                city: this.state.city,
+                state_province: this.state.state_province,
+                zip: this.state.zip,
+                is_photographer: true
+            })
+        } catch (error) {
+                console.log('error creating user', error.message);
     }
+} 
+        return userRef;
+};    
 
     firebase.initializeApp(config);
 

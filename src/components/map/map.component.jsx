@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
-import firebase, { firestore } from '../../firebase/firebase.utils';
-import { GoogleMap, LoadScript, Marker, Circle, StandaloneSearchBox } from '@react-google-maps/api';
+import firebase from '../../firebase/firebase.utils';
+import { GoogleMap, LoadScript, Marker, Circle, StandaloneSearchBox, InfoWindow } from '@react-google-maps/api';
+import CustomMarker from './CustomMarker'
+import ViewProfile from '../view-profile/viewprofile.component';
 import * as geofirex from 'geofirex';
 
-/*
-const geo = geofirex.init(firebase);
-const position = geo.point(34.008514, -84.382731);
-firestore.collection('users').add({ displayName: 'Sauron', position });
-*/
+import Button from 'react-bootstrap/Button'
+import Card from 'react-bootstrap/Card'
+
+import { LinkContainer } from 'react-router-bootstrap';
+
 
 const geo = geofirex.init(firebase);
-//const users = firestore.collection('users');
 
 const mapsApiKey = process.env.REACT_APP_MAPS_API_KEY;
+
+const cameraIcon = "camera.svg"
 
 const mapContainerStyle = {
     height: "600px",
@@ -40,6 +43,8 @@ const circleOptions = {
 
 const placesLib = ["places"]
 
+// Profile should go here: to={`/user/${this.state.infoWindow.userId}`}
+
 export default class Map extends Component {
 
     constructor() {
@@ -52,9 +57,50 @@ export default class Map extends Component {
             shootPosition: null,
             circleCenter: null,
             mapZoom: 4,
-            locations: []
+            users: [],
+            showInfoWindow: false,
+            infoWindow: {
+
+                position: {},
+                title: "",
+                userId: "",
+
+            }
 
         }
+
+        this.handleMarkerClick = this.handleMarkerClick.bind(this)
+        this.closeInfoWindow = this.closeInfoWindow.bind(this)
+
+    }
+
+    handleMarkerClick(e, props) {
+
+        this.setState({
+
+            showInfoWindow: true,
+
+            infoWindow: {
+
+                position: props.position,
+                title: props.user.displayName,
+                userId: props.user.id,
+                profile_pic: props.user.profile_pic,
+                img_url: props.user.img_url,
+
+            }
+
+        })
+
+    };
+
+    closeInfoWindow() {
+
+        this.setState({
+
+            showInfoWindow: false
+
+        })
 
     }
 
@@ -63,10 +109,6 @@ export default class Map extends Component {
         let { mapCenter, shootPosition, circleCenter, mapZoom } = this.state;
 
         const onLoadSearchBox = ref => this.searchBox = ref;
-
-        const onLoadMarker = marker => {
-            console.log('marker: ', marker.position)
-        }
 
         const onPlacesChanged = () => {
 
@@ -80,20 +122,19 @@ export default class Map extends Component {
                 mapCenter: { lat: targetLat, lng: targetLng },
                 shootPosition: { lat: targetLat, lng: targetLng },
                 circleCenter: { lat: targetLat, lng: targetLng },
-                mapZoom: 10
+                mapZoom: 10,
 
             });
 
         }
 
-        
         const onMarkerPosChanged = (lat, lng) => {
 
-            if(!lat) {
+            if (!lat) {
                 lat = mapCenter.lat;
             }
 
-            if(!lng) {
+            if (!lng) {
                 lng = mapCenter.lng;
             }
 
@@ -101,20 +142,20 @@ export default class Map extends Component {
             const radius = 40;
             const field = 'position';
             const users = firebase.firestore().collection('users');
-            const query = geo.query(users).within(center, radius, field);
+            const usersWithinArea = geo.query(users).within(center, radius, field);
 
-            query.subscribe(( snapshot ) => { 
+            usersWithinArea.subscribe((snapshot) => {
 
                 this.setState({
 
-                    locations: snapshot
+                    showInfoWindow: false,
+                    users: snapshot,
 
                 })
 
             });
 
         }
-        
 
         return (
             <LoadScript
@@ -153,32 +194,44 @@ export default class Map extends Component {
                         />
                     </StandaloneSearchBox>
                     <Marker
-                        onLoad={onLoadMarker}
                         position={shootPosition}
                         onPositionChanged={onMarkerPosChanged}
                     />
                     {
-                        this.state.locations.map(location => {
+                        this.state.users.map(user => {
 
-                            // function to convert to geocode
-                            const lat = location.position.geopoint.Latitude
-                            const lng = location.position.geopoint.Longitude
+                            const userId = user.id;
 
-                            const geocode = {lat: lat, lng: lng}
+                            const lat = user.position.geopoint.O;
+                            const lng = user.position.geopoint.F;
+                            const geocode = { lat: lat, lng: lng };
 
-                            return <Marker position={geocode}/>
+                            const geohash = user.position.geohash;
+
+                            return <CustomMarker user={user} key={userId} position={geocode} icon={cameraIcon} options={{ userId, geocode, geohash, }} onMarkerClick={this.handleMarkerClick} />
 
                         })
+                    }
+                    {
+                        this.state.showInfoWindow &&
 
+                        <InfoWindow position={this.state.infoWindow.position} onCloseClick={this.closeInfoWindow} options={{ pixelOffset: { width: 0, height: -40, widthUnit: "px", heightUnit: "px" } }}>
+                            <Card style={{ width: "175px" }}>
+                                <Card.Img variant="top" src={this.state.infoWindow.img_url} />
+                                <Card.Body>
+                                    <Card.Title>{this.state.infoWindow.title}</Card.Title>
+                                    <Card.Text>
+                                        Check out my work!
+                                    </Card.Text>
+                                    <LinkContainer to={`/user/${this.state.infoWindow.userId}`}>
+                                        <Button variant="info">Profile</Button>
+                                    </LinkContainer>
+                                </Card.Body>
+                            </Card>
+                        </InfoWindow>
                     }
                     <Circle
-                        // optional
-                        // onLoad={onLoad}
-                        // optional
-                        // onUnmount={onUnmount}
-                        // required
                         center={circleCenter}
-                        // required
                         options={circleOptions}
                     />
                 </GoogleMap>

@@ -1,11 +1,17 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 
 
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
+
+import { createProfileInfo } from '../../firebase/firebase.utils';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom button/custom-button.component';
+import { Checkbox } from '@material-ui/core';
 
 import './profile-info.styles.scss';
+import CheckoutPage from '../../pages/checkout/checkout.component';
 
 class ProfileInfo extends React.Component {
     constructor(){
@@ -19,15 +25,32 @@ class ProfileInfo extends React.Component {
             address_line_2: '',
             city: '',
             state_province: '',
-            zip: ''        
+            zip: '',
+            is_photographer: true       
     };
         
     }
     handleSubmit = async event => {
         event.preventDefault();
-        const {first_name, last_name, email, phone, address_line_1, address_line_2,city,state_province,zip} = this.state;
-            try {
-            this.setState({
+        createProfileInfo();
+        /* const userRef = firebase.database().ref('users');
+        
+        const snapShot = await userRef.get();
+        if( !snapShot.exists ) {
+            userRef.set({
+            first_name: this.state.first_name,
+            last_name: this.state.last_name,
+            email: this.state.email,
+            phone: this.state.phone,
+            address_line_1: this.state.address_line_1,
+            address_line_2: this.state.address_line_2,
+            city: this.state.city,
+            state_province: this.state.state_province,
+            zip: this.state.zip,
+            is_photographer: true
+        });
+    }  */
+        this.setState({
             first_name: '',
             last_name: '',
             email: '',
@@ -36,19 +59,16 @@ class ProfileInfo extends React.Component {
             address_line_2: '',
             city: '',
             state_province: '',
-            zip: '' 
-            })
-        } catch (error) {
-            console.log(error);
-        }
+            zip: '',
+            is_photographer: true
+            }); 
     };
     handleChange = event => {
         const { value, name } = event.target;
 
-        this.setState({ [name]: value })
-    }
+        this.setState({ [name]: value });
+    };
     render(){
-        const {first_name, last_name, email, phone, address_line_1, address_line_2,city,state_province,zip} = this.state;
 
         return(
             <div className='update-info'>
@@ -58,16 +78,16 @@ class ProfileInfo extends React.Component {
                 <form className='profile-info' onSubmit={this.handleSubmit} >
                 <FormInput
                         type='text'
-                        name='firstname'
-                        value= {first_name}
+                        name='first_name'
+                        value= {this.state.first_name}
                         onChange= {this.handleChange}
                         label='First Name'
                         required
                     />
                 <FormInput
                         type='text'
-                        name='lastname'
-                        value= {last_name}
+                        name='last_name'
+                        value= {this.state.last_name}
                         onChange= {this.handleChange}
                         label='Last Name'
                         required
@@ -75,7 +95,7 @@ class ProfileInfo extends React.Component {
                 <FormInput
                         type='email'
                         name='email'
-                        value= {email}
+                        value= {this.state.email}
                         onChange= {this.handleChange}
                         label='Email'
                         required
@@ -83,7 +103,7 @@ class ProfileInfo extends React.Component {
                 <FormInput
                         type='text'
                         name='phone'
-                        value= {phone}
+                        value= {this.state.phone}
                         onChange= {this.handleChange}
                         label='Phone'
                         required
@@ -91,7 +111,7 @@ class ProfileInfo extends React.Component {
                 <FormInput
                         type='text'
                         name='address_line_1'
-                        value= {address_line_1}
+                        value= {this.state.address_line_1}
                         onChange= {this.handleChange}
                         label='Street Address'
                         required
@@ -99,14 +119,14 @@ class ProfileInfo extends React.Component {
                 <FormInput
                         type='text'
                         name='address_line_2'
-                        value= {address_line_2}
+                        value= {this.state.address_line_2}
                         onChange= {this.handleChange}
                         label='Apt Suite'
                     />
                 <FormInput
                         type='text'
                         name='city'
-                        value= {city}
+                        value= {this.state.city}
                         onChange= {this.handleChange}
                         label='City'
                         required
@@ -114,7 +134,7 @@ class ProfileInfo extends React.Component {
                 <FormInput
                         type='text'
                         name='state_province'
-                        value= {state_province}
+                        value= {this.state.state_province}
                         onChange= {this.handleChange}
                         label='State / Province'
                         required
@@ -122,11 +142,17 @@ class ProfileInfo extends React.Component {
                 <FormInput
                         type='text'
                         name='zip'
-                        value= {zip}
+                        value= {this.state.zip}
                         onChange= {this.handleChange}
                         label='Zip Code'
                         required
                     />
+                <h5>Are you a photographer?</h5>
+                <Checkbox 
+                checked={this.checked}
+                onChange={this.handleChange}>
+                    
+                </Checkbox>
                 <div className='buttons'>
                 <CustomButton type="submit"> Save Changes </CustomButton>
                     
