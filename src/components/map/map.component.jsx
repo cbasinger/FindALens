@@ -223,7 +223,7 @@ export default class Map extends Component {
                                     <Card.Text>
                                         Check out my work!
                                     </Card.Text>
-                                    <LinkContainer to={ViewProfile}>
+                                    <LinkContainer to={`/user/${this.state.infoWindow.userId}`}>
                                         <Button variant="info">Profile</Button>
                                     </LinkContainer>
                                 </Card.Body>
