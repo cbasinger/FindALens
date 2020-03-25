@@ -14,7 +14,6 @@
     "dotenv": "^8.2.0",
     "firebase": "^7.10.0",
     "geofirex": "^0.1.0",
-    "node-sass": "^4.13.1",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.0",
     "react-dom": "^16.13.1",
