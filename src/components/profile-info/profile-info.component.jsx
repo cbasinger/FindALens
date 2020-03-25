@@ -40,18 +40,22 @@ class ProfileInfo extends React.Component {
             city: '',
             state_province: '',
             zip: '',
-            is_photographer: true
+            is_photographer: true,
+            geocode: {}
         };
 
         this.convertToGeocode = this.convertToGeocode.bind(this);
 
     }
-
+    
     handleSubmit = async event => {
         
         event.preventDefault();
-        createProfileInfo();
+        
         this.convertToGeocode();
+
+        createProfileInfo();
+        
         
         /* const userRef = firebase.database().ref('users');
         
@@ -70,7 +74,7 @@ class ProfileInfo extends React.Component {
             is_photographer: true
         });
     }  */
-        this.setState({
+        /* this.setState({
             first_name: '',
             last_name: '',
             email: '',
@@ -81,7 +85,7 @@ class ProfileInfo extends React.Component {
             state_province: '',
             zip: '',
             is_photographer: true
-        });
+        }); */
     };
 
     handleChange = event => {
@@ -93,16 +97,21 @@ class ProfileInfo extends React.Component {
 
     convertToGeocode = () => {
 
-        Geocode.fromAddress(`${this.state.address_line_1}, ${this.state.city}, ${this.state.state_province}, ${this.state.zip}`).then(
-            response => {
-                const lat = response.results[0].geometry.location.lat;
-                const lng = response.results[0].geometry.location.lng;
-                console.log(lat, lng);
-            }
-        ).then(response => {
-            console.log(response)
-        }).catch(error => {
-            console.log(error);
+        Geocode.fromAddress(`${this.state.address_line_1}, 
+                             ${this.state.city}, 
+                             ${this.state.state_province}, 
+                             ${this.state.zip}`)
+            
+        .then(response => {
+           
+            console.log("response from function =>", response.results[0].geometry.location)
+            //return response.results[0].geometry.location
+
+        })
+        .catch(error => {
+
+            console.log(error)
+
         });
 
     }
