@@ -44,19 +44,36 @@ class ProfileInfo extends React.Component {
             geocode: {}
         };
 
-        this.convertToGeocode = this.convertToGeocode.bind(this);
+        //this.convertToGeocode = this.convertToGeocode.bind(this);
 
     }
-    
-    handleSubmit = async event => {
-        
-        event.preventDefault();
-        
-        this.convertToGeocode();
 
-        createProfileInfo();
-        
-        
+    handleSubmit = async event => {
+
+        event.preventDefault();
+
+        //convert address to geocode
+        await Geocode.fromAddress(` ${this.state.address_line_1}, 
+                                    ${this.state.city}, 
+                                    ${this.state.state_province},
+                                    ${this.state.zip}`)
+            .then(response => {
+
+                const geocode = response.results[0].geometry.location
+                
+                this.setState({
+                    geocode: geocode
+                })
+
+            })
+            .catch(error => {
+
+                console.log(error)
+
+            });
+
+        createProfileInfo()
+
         /* const userRef = firebase.database().ref('users');
         
         const snapShot = await userRef.get();
@@ -94,27 +111,6 @@ class ProfileInfo extends React.Component {
         this.setState({ [name]: value });
 
     };
-
-    convertToGeocode = () => {
-
-        Geocode.fromAddress(`${this.state.address_line_1}, 
-                             ${this.state.city}, 
-                             ${this.state.state_province}, 
-                             ${this.state.zip}`)
-            
-        .then(response => {
-           
-            console.log("response from function =>", response.results[0].geometry.location)
-            //return response.results[0].geometry.location
-
-        })
-        .catch(error => {
-
-            console.log(error)
-
-        });
-
-    }
 
     render() {
 
