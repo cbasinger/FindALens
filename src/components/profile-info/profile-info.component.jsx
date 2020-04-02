@@ -21,7 +21,6 @@ Geocode.setApiKey(`AIzaSyDMGisNx0DgItQ35EGeuTKh4M3Cj4QGbc4`);
 Geocode.setLanguage("en");
 
 // set response region. Its optional.
-// A Geocoding request with region=es (Spain) will return the Spanish city.
 Geocode.setRegion("us");
 
 // Enable or disable logs. Its optional.
